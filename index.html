@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#07131d" />
+    <title>Media Center Live</title>
+    <meta
+      name="description"
+      content="A fullscreen media center display with live weather and rotating trivia."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="stage" id="stage" aria-live="polite">
+      <div class="ambient ambient-one"></div>
+      <div class="ambient ambient-two"></div>
+
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Media Center Live home">
+          <span class="brand-mark" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+          <span>
+            <strong>MEDIA CENTER</strong>
+            <small>LIVE</small>
+          </span>
+        </a>
+
+        <div class="status" aria-label="Current time and status">
+          <span class="live-dot"></span>
+          <span class="status-label">ON AIR</span>
+          <time id="clock">--:--</time>
+        </div>
+      </header>
+
+      <section class="slide slide-trivia is-active" data-slide="trivia" aria-labelledby="trivia-title">
+        <div class="slide-grid">
+          <div class="eyebrow-row">
+            <span class="eyebrow"><i>01</i> DAILY BRAIN BREAK</span>
+            <span class="category" id="trivia-category">GENERAL KNOWLEDGE</span>
+          </div>
+
+          <div class="trivia-copy">
+            <h1 id="trivia-title">Loading today’s question…</h1>
+            <div class="answer-shell" id="answer-shell">
+              <span class="answer-label">ANSWER</span>
+              <p id="trivia-answer">Stand by</p>
+            </div>
+          </div>
+
+          <div class="trivia-side" aria-hidden="true">
+            <div class="question-orbit">
+              <span>?</span>
+              <div class="orbit orbit-one"></div>
+              <div class="orbit orbit-two"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide-weather" data-slide="weather" aria-labelledby="weather-title">
+        <div class="weather-layout">
+          <div class="weather-now">
+            <div class="eyebrow-row">
+              <span class="eyebrow"><i>02</i> OUTSIDE NOW</span>
+              <span class="category" id="weather-updated">UPDATING</span>
+            </div>
+            <div class="location-line">
+              <span class="pin" aria-hidden="true">●</span>
+              <span id="location-name">Roseville, Minnesota</span>
+            </div>
+            <div class="temperature-row">
+              <span class="weather-icon" id="weather-icon" aria-hidden="true">☼</span>
+              <span class="temperature" id="temperature">--°</span>
+            </div>
+            <h1 id="weather-title">Gathering the forecast…</h1>
+            <div class="weather-details">
+              <span><small>FEELS LIKE</small><strong id="feels-like">--°</strong></span>
+              <span><small>WIND</small><strong id="wind">-- mph</strong></span>
+              <span><small>PRECIP.</small><strong id="precip">--%</strong></span>
+            </div>
+          </div>
+
+          <div class="forecast-panel">
+            <div class="forecast-head">
+              <span>THE NEXT FEW DAYS</span>
+              <span id="weather-note">Live local forecast</span>
+            </div>
+            <div class="forecast-list" id="forecast-list">
+              <div class="forecast-row skeleton"></div>
+              <div class="forecast-row skeleton"></div>
+              <div class="forecast-row skeleton"></div>
+              <div class="forecast-row skeleton"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide-news" data-slide="news" aria-labelledby="news-headline">
+        <div class="news-layout">
+          <div class="news-main">
+            <div class="eyebrow-row">
+              <span class="eyebrow"><i>03</i> TOP STORY</span>
+              <span class="category">IN THE NEWS</span>
+            </div>
+            <div class="news-meta">
+              <span id="news-source">WIKIPEDIA CURRENT EVENTS</span>
+              <span id="news-updated">UPDATING</span>
+            </div>
+            <h1 id="news-headline">Gathering today’s leading story…</h1>
+            <a id="news-link" class="news-link" href="https://en.wikipedia.org/wiki/Portal:Current_events" target="_blank" rel="noopener noreferrer">
+              Explore the story <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <div class="news-art" aria-hidden="true">
+            <div class="news-date">
+              <span id="news-month">OCT</span>
+              <strong id="news-day">27</strong>
+            </div>
+            <div class="signal-lines"><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="news-art-label">CURRENT<br />AFFAIRS</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide-news slide-minnesota" data-slide="minnesota" aria-labelledby="minnesota-headline">
+        <div class="news-layout">
+          <div class="news-main">
+            <div class="eyebrow-row">
+              <span class="eyebrow"><i>04</i> MINNESOTA</span>
+              <span class="category">STATEWIDE</span>
+            </div>
+            <div class="news-meta">
+              <span>MINNPOST</span>
+              <span id="minnesota-updated">UPDATING</span>
+            </div>
+            <h1 id="minnesota-headline">Gathering Minnesota’s leading story…</h1>
+            <a id="minnesota-link" class="news-link" href="https://www.minnpost.com/" target="_blank" rel="noopener noreferrer">
+              Explore the story <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+          <div class="news-art news-art-minnesota" aria-hidden="true">
+            <div class="mn-mark">
+              <span>NORTH STAR STATE</span>
+              <strong>MN</strong>
+            </div>
+            <span class="mn-star">✦</span>
+            <span class="news-art-label">LOCAL<br />SPOTLIGHT</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide-source" data-slide="rooms" aria-label="Today's media center room schedule">
+        <div class="source-frame">
+          <img
+            class="linked-slide-image"
+            data-label="Today’s room schedule"
+            data-src="https://docs.google.com/presentation/d/12lNrWDhZ95yRpCrf2LoMvkxFhbHJz7WEUAv-asPhgdU/export/png?id=12lNrWDhZ95yRpCrf2LoMvkxFhbHJz7WEUAv-asPhgdU&amp;pageid=g38a2859927e_0_0"
+            alt="Today’s media center room availability and reservations"
+          />
+          <div class="source-loading">Loading today’s room schedule…</div>
+        </div>
+      </section>
+
+      <section class="slide slide-source" data-slide="events" aria-label="Today's media center events">
+        <div class="source-frame">
+          <img
+            class="linked-slide-image"
+            data-label="Today’s media center events"
+            data-src="https://docs.google.com/presentation/d/12lNrWDhZ95yRpCrf2LoMvkxFhbHJz7WEUAv-asPhgdU/export/png?id=12lNrWDhZ95yRpCrf2LoMvkxFhbHJz7WEUAv-asPhgdU&amp;pageid=g2883ea29fc0_0_0"
+            alt="Today’s media center events"
+          />
+          <div class="source-loading">Loading today’s events…</div>
+        </div>
+      </section>
+
+      <footer class="ticker">
+        <div class="slide-count"><span id="slide-number">01</span><span>/ 06</span></div>
+        <div class="ticker-copy" id="ticker-copy">Think it through — the answer appears in a moment.</div>
+        <button class="icon-button" id="fullscreen-button" aria-label="Enter fullscreen" title="Fullscreen">⛶</button>
+        <button class="icon-button" id="settings-button" aria-label="Open settings" title="Settings">⚙</button>
+        <div class="progress-track" aria-hidden="true"><div class="progress-bar" id="progress-bar"></div></div>
+      </footer>
+    </main>
+
+    <aside class="settings" id="settings" aria-hidden="true" aria-labelledby="settings-title">
+      <div class="settings-head">
+        <div>
+          <span class="settings-kicker">DISPLAY CONTROLS</span>
+          <h2 id="settings-title">Make it yours.</h2>
+        </div>
+        <button class="close-button" id="close-settings" aria-label="Close settings">×</button>
+      </div>
+      <form id="settings-form">
+        <label>
+          <span>Weather location</span>
+          <input id="city-input" name="city" value="Roseville, Minnesota" autocomplete="off" />
+        </label>
+        <label>
+          <span>Seconds per slide</span>
+          <input id="duration-input" name="duration" type="number" min="10" max="120" value="24" />
+        </label>
+        <label>
+          <span>Trivia mix</span>
+          <select id="category-input" name="category">
+            <option value="mix">A little of everything</option>
+            <option value="9">General knowledge</option>
+            <option value="10">Books</option>
+            <option value="17">Science & nature</option>
+            <option value="22">Geography</option>
+            <option value="23">History</option>
+            <option value="27">Animals</option>
+          </select>
+        </label>
+        <p class="settings-note" id="settings-note">Weather updates every 15 minutes. Linked schedules refresh each morning at 8:00.</p>
+        <button class="save-button" type="submit">Save & refresh display</button>
+      </form>
+    </aside>
+    <div class="scrim" id="scrim"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
