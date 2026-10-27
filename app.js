@@ -15,6 +15,18 @@ const FALLBACK_QUESTIONS = [
   { category: "General Knowledge", question: "What color is found on roughly three-quarters of the world’s national flags?", answer: "Red" },
 ];
 
+const DISTRICT_PHOTOS = [
+  { title: "Pack the Pantry: A Community Success", alt: "Photos of food and supply donations to the Roseville Area Schools Community Pantry", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1793114629/isd623org/r6av13kegwjzslcyyuxj/102726DCPackthePantry.png" },
+  { title: "Science in Action", alt: "Students working together with circuits at Brimhall Elementary School", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1793123593/isd623org/ecxe55vio8ytfganbjzj/DistrictHomepageSliderTemplate1920x1000px3.png" },
+  { title: "Homecoming Energy", alt: "Highlights from the Roseville Area High School Homecoming Pep Fest", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1792779654/isd623org/odooqd9uoebuwschamkw/102326RAHSPepFest.png" },
+  { title: "Honoring the People We Admire", alt: "Roseville Area High School students sharing stories through the Admiration Project", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1792784378/isd623org/eagillk6jvnx5jjafqst/102326RAHSAdmirationProject.png" },
+  { title: "Raiders Advance to State", alt: "Roseville Area High School tennis doubles partners celebrating their section win", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1792440249/isd623org/kuzckkik2l5xdsi518wf/101926RAHSTennisChamps.png" },
+  { title: "Science Friday Excitement", alt: "Early childhood students and their teacher making colorful lava lamps", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1791334728/isd623org/anhuwh3xitgnppr6gioy/100626ECLavaLamps.png" },
+  { title: "A 26-Year Tradition", alt: "Roseville Area High School cross country students volunteering together", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1791299814/isd623org/hz76zazcyehwn55rpqt4/100726RAHSCrossCountry.jpg" },
+  { title: "Community Care in Action", alt: "Roseville community members supporting the district community pantry", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1790909696/isd623org/zerdt5wllquymwtbrk8o/100126RAHSPoliceDonation.png" },
+  { title: "Mystery Engineer at SPARK", alt: "Central Park Elementary students working on engineering projects", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1790644694/isd623org/flzjktwoctvyidytwgps/092826CPMysteryEngineer.png" },
+];
+
 const state = {
   settings: loadSettings(),
   activeSlide: 0,
@@ -80,6 +92,8 @@ function scheduleSlide() {
     tickerCopy.textContent = "A leading current-affairs headline · Refreshes every 30 minutes";
   } else if (slideType === "minnesota") {
     tickerCopy.textContent = "A leading Minnesota headline from MinnPost · Refreshes every 30 minutes";
+  } else if (slideType === "district") {
+    tickerCopy.textContent = "Daily district photo from isd623.org · A new highlight appears each day";
   } else if (slideType === "rooms") {
     tickerCopy.textContent = "Today’s media center room schedule · Refreshed from Google Slides at 8:00 AM";
   } else {
@@ -283,6 +297,22 @@ function centralDateKey() {
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
+function updateDistrictPhoto() {
+  const dateKey = centralDateKey();
+  const dayNumber = Number(dateKey.replaceAll("-", ""));
+  const photo = DISTRICT_PHOTOS[dayNumber % DISTRICT_PHOTOS.length];
+  const image = document.querySelector("#district-photo");
+  image.src = `${photo.url}?daily=${dateKey}`;
+  image.alt = photo.alt;
+  document.querySelector("#district-title").textContent = photo.title;
+  document.querySelector("#district-date").textContent = new Intl.DateTimeFormat([], {
+    timeZone: "America/Chicago",
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  }).format(new Date()).toUpperCase();
+}
+
 function loadLinkedSlides(markDailyRefresh = false) {
   const cacheKey = `${centralDateKey()}-${Date.now()}`;
   document.querySelectorAll(".linked-slide-image").forEach((image) => {
@@ -363,6 +393,7 @@ document.addEventListener("keydown", (event) => {
 async function init() {
   updateClock();
   updateNewsDate();
+  updateDistrictPhoto();
   setInterval(updateClock, 1000);
   const startHour = Number(centralTimeParts().hour) % 24;
   if (startHour < 8) localStorage.removeItem("linkedSlidesRefreshDate");
@@ -372,6 +403,7 @@ async function init() {
   setInterval(loadNews, 30 * 60 * 1000);
   setInterval(loadMinnesotaNews, 30 * 60 * 1000);
   setInterval(updateNewsDate, 60 * 60 * 1000);
+  setInterval(updateDistrictPhoto, 60 * 60 * 1000);
   setInterval(checkMorningRefresh, 30 * 1000);
   scheduleSlide();
 }
