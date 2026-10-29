@@ -38,6 +38,8 @@ const state = {
 const slides = [...document.querySelectorAll(".slide")];
 const progressBar = document.querySelector("#progress-bar");
 const answerShell = document.querySelector("#answer-shell");
+const triviaCopy = document.querySelector(".trivia-copy");
+const triviaOptions = document.querySelector("#trivia-options");
 const tickerCopy = document.querySelector("#ticker-copy");
 let lastNewsUpdate = 0;
 let lastMinnesotaUpdate = 0;
@@ -60,6 +62,50 @@ function decodeHTML(value) {
   return textarea.value;
 }
 
+function shuffleAnswers(answers) {
+  const shuffled = [...answers];
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1));
+    [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+  }
+  return shuffled;
+}
+
+function revealTriviaAnswer(isVisible) {
+  answerShell.classList.toggle("is-visible", isVisible);
+  triviaOptions.classList.toggle("is-revealed", isVisible);
+}
+
+function renderTrivia() {
+  const { category, question, answer, choices = [] } = state.currentQuestion;
+  document.querySelector("#trivia-category").textContent = category.toUpperCase();
+  document.querySelector("#trivia-title").textContent = question;
+  document.querySelector("#trivia-answer").textContent = answer;
+
+  triviaOptions.replaceChildren();
+  triviaOptions.hidden = choices.length === 0;
+  triviaCopy.classList.toggle("has-options", choices.length > 0);
+
+  choices.forEach((choice, index) => {
+    const option = document.createElement("li");
+    option.className = "trivia-option";
+    option.dataset.correct = String(choice === answer);
+
+    const letter = document.createElement("span");
+    letter.className = "option-letter";
+    letter.textContent = String.fromCharCode(65 + index);
+
+    const text = document.createElement("span");
+    text.className = "option-text";
+    text.textContent = choice;
+
+    option.append(letter, text);
+    triviaOptions.append(option);
+  });
+
+  revealTriviaAnswer(false);
+}
+
 function updateClock() {
   const now = new Date();
   document.querySelector("#clock").textContent = now.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
@@ -79,11 +125,11 @@ function scheduleSlide() {
 
   const slideType = slides[state.activeSlide].dataset.slide;
   if (slideType === "trivia") {
-    answerShell.classList.remove("is-visible");
+    revealTriviaAnswer(false);
     tickerCopy.textContent = "Think it through — the answer appears in a moment.";
     const revealAt = Math.max(6, Math.round(state.settings.duration * 0.58)) * 1000;
     state.revealTimer = setTimeout(() => {
-      answerShell.classList.add("is-visible");
+      revealTriviaAnswer(true);
       tickerCopy.textContent = "How did you do? A fresh question arrives next time around.";
     }, revealAt);
   } else if (slideType === "weather") {
@@ -130,14 +176,13 @@ async function loadTrivia() {
       category: decodeHTML(item.category),
       question: decodeHTML(item.question),
       answer: decodeHTML(item.correct_answer),
+      choices: shuffleAnswers([item.correct_answer, ...item.incorrect_answers].map(decodeHTML)),
     };
   } catch {
     state.currentQuestion = FALLBACK_QUESTIONS[Math.floor(Math.random() * FALLBACK_QUESTIONS.length)];
   }
 
-  document.querySelector("#trivia-category").textContent = state.currentQuestion.category.toUpperCase();
-  document.querySelector("#trivia-title").textContent = state.currentQuestion.question;
-  document.querySelector("#trivia-answer").textContent = state.currentQuestion.answer;
+  renderTrivia();
 }
 
 const WEATHER_CODES = {
