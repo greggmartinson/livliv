@@ -1,0 +1,45 @@
+{
+  "updated": "2026-10-29",
+  "books": [
+    {
+      "title": "Stupid Fast",
+      "author": "Geoff Herbach",
+      "isbn": "1-4022-5630-2",
+      "teaser": "Just before his sixteenth birthday, Felton Reinstein has a sudden growth spurt that turns him from a small, jumpy, picked-on boy with the nickname of Squirrel Nut to a powerful athlete, leading to new friends, his first love, and the courage to confront his family's past and current problems.",
+      "catalogUrl": "https://isd623.follettdestiny.com/portal/portal?app=Destiny%20Discover&appId=destiny-9DDH-PTC2&siteGuid=EAC4A41F-1970-4C0A-A8E8-DCF2B963D011&nav=https:%2F%2Fisd623.follettdestiny.com%2Fmetasearch%2Fui%2F69556%2Fbookbag%2FLIBRARY:417acbb81879bf5c6030b63e0e63452c19de2a33%2Fdetails%3FrequestId%3D9F11A4DF-1AB7-4AA5-92B5-F575BB76070E%26selectedTab%3DALL%26activeMenu%3DHOME",
+      "gradeBand": "High School",
+      "category": "Sports",
+      "coverUrl": ""
+    },
+    {
+      "title": "Dear Manny",
+      "author": "Nic Stone",
+      "isbn": "978-0-593-30804-2",
+      "teaser": "While running for junior class president at his university, Jared falls for his opponent, who has a similar platform based on equity and inclusion, and processes his feelings by writing letters to his deceased friend Manny.",
+      "catalogUrl": "https://isd623.follettdestiny.com/portal/portal?app=Destiny%20Discover&appId=destiny-9DDH-PTC2&siteGuid=EAC4A41F-1970-4C0A-A8E8-DCF2B963D011&nav=https:%2F%2Fisd623.follettdestiny.com%2Fmetasearch%2Fui%2F69556%2Fbookbag%2FLIBRARY:abe3c7777c7fde61583132afe20a52d27849e1d6%2Fdetails%3FrequestId%3D3CEE925D-4643-4FD8-8ED1-766ECF9EC88B%26selectedTab%3DALL%26activeMenu%3DHOME",
+      "gradeBand": "High School",
+      "category": "Adventure",
+      "coverUrl": ""
+    },
+    {
+      "title": "A History of Hope",
+      "author": "James Fraser",
+      "isbn": "0-312-23904-1",
+      "teaser": "From the words of ordinary people to the country's founding ideals, hope for a better future has always been part of the American story.",
+      "catalogUrl": "https://isd623.follettdestiny.com/portal/portal?app=Destiny%20Discover&appId=destiny-9DDH-PTC2&siteGuid=EAC4A41F-1970-4C0A-A8E8-DCF2B963D011&nav=https:%2F%2Fisd623.follettdestiny.com%2Fmetasearch%2Fui%2F69556%2Fbookbag%2FLIBRARY:76e3ba90d08b7eaabdc0ce2a9a89aaed5efef36f%2Fdetails%3FrequestId%3D9827241C-4AA5-451F-B7F2-0BD8E7049472%26selectedTab%3DALL%26activeMenu%3DHOME",
+      "gradeBand": "High School",
+      "category": "Other",
+      "coverUrl": ""
+    },
+    {
+      "title": "Wonder Woman: Bitter Rivals",
+      "author": "Greg Rucka",
+      "isbn": "1-4012-0462-7",
+      "teaser": "Wonder Woman turns to Batman for help investigating a murder that soon reveals a connection to billionaire Veronica Cale.",
+      "catalogUrl": "https://isd623.follettdestiny.com/portal/portal?app=Destiny%20Discover&appId=destiny-9DDH-PTC2&siteGuid=EAC4A41F-1970-4C0A-A8E8-DCF2B963D011&nav=https:%2F%2Fisd623.follettdestiny.com%2Fmetasearch%2Fui%2F69556%2Fbookbag%2FLIBRARY:a4747113e1365f3f5b835140c49c6edd5e4c02bf%2Fdetails%3FrequestId%3DvisualSearch%26selectedTab%3DALL%26activeMenu%3DHOME",
+      "gradeBand": "High School",
+      "category": "Graphic Novel",
+      "coverUrl": ""
+    }
+  ]
+}

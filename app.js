@@ -27,6 +27,19 @@ const DISTRICT_PHOTOS = [
   { title: "Mystery Engineer at SPARK", alt: "Central Park Elementary students working on engineering projects", url: "https://resources.finalsite.net/images/f_auto,q_auto,t_image_size_5/v1790644694/isd623org/flzjktwoctvyidytwgps/092826CPMysteryEngineer.png" },
 ];
 
+const FALLBACK_BOOKS = [
+  {
+    title: "Stupid Fast",
+    author: "Geoff Herbach",
+    isbn: "1-4022-5630-2",
+    teaser: "A sudden growth spurt turns Felton Reinstein into a powerful athlete—and challenges him to confront his family's past.",
+    catalogUrl: "",
+    gradeBand: "High School",
+    category: "Sports",
+    coverUrl: "",
+  },
+];
+
 const state = {
   settings: loadSettings(),
   activeSlide: 0,
@@ -43,6 +56,8 @@ const triviaOptions = document.querySelector("#trivia-options");
 const tickerCopy = document.querySelector("#ticker-copy");
 let lastNewsUpdate = 0;
 let lastMinnesotaUpdate = 0;
+let activeBooks = FALLBACK_BOOKS;
+let currentBookDate = "";
 
 function loadSettings() {
   try {
@@ -138,6 +153,8 @@ function scheduleSlide() {
     tickerCopy.textContent = "A leading current-affairs headline · Refreshes every 30 minutes";
   } else if (slideType === "minnesota") {
     tickerCopy.textContent = "A leading Minnesota headline from MinnPost · Refreshes every 30 minutes";
+  } else if (slideType === "book") {
+    tickerCopy.textContent = "Book of the Day · Selected from active library picks at 8:00 AM Central";
   } else if (slideType === "district") {
     tickerCopy.textContent = "Daily district photo from isd623.org · A new highlight appears each day";
   } else if (slideType === "rooms") {
@@ -342,6 +359,65 @@ function centralDateKey() {
   return `${parts.year}-${parts.month}-${parts.day}`;
 }
 
+function bookSelectionDateKey() {
+  const parts = centralTimeParts();
+  const date = new Date(Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day)));
+  if (Number(parts.hour) < 8) date.setUTCDate(date.getUTCDate() - 1);
+  return date.toISOString().slice(0, 10);
+}
+
+function bookCoverUrl(book) {
+  if (book.coverUrl) return book.coverUrl;
+  const isbn = String(book.isbn || "").replace(/[^0-9X]/gi, "");
+  return isbn ? `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg?default=false` : "";
+}
+
+function updateBookOfDay(force = false) {
+  if (!activeBooks.length) activeBooks = FALLBACK_BOOKS;
+  const dateKey = bookSelectionDateKey();
+  if (!force && dateKey === currentBookDate) return;
+  currentBookDate = dateKey;
+
+  const dayNumber = Math.floor(new Date(`${dateKey}T00:00:00Z`).getTime() / 86400000);
+  const book = activeBooks[Math.abs(dayNumber) % activeBooks.length];
+  document.querySelector("#book-category").textContent = (book.category || "Library Pick").toUpperCase();
+  document.querySelector("#book-grade").textContent = (book.gradeBand || "All Ages").toUpperCase();
+  document.querySelector("#book-title").textContent = book.title;
+  document.querySelector("#book-author").textContent = book.author;
+  document.querySelector("#book-teaser").textContent = book.teaser;
+  document.querySelector("#book-cover-letter").textContent = book.title.trim().charAt(0).toUpperCase() || "B";
+  document.querySelector("#book-date").textContent = new Intl.DateTimeFormat([], {
+    timeZone: "UTC",
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  }).format(new Date(`${dateKey}T12:00:00Z`)).toUpperCase();
+
+  const link = document.querySelector("#book-link");
+  link.hidden = !book.catalogUrl;
+  link.href = book.catalogUrl || "#";
+
+  const cover = document.querySelector("#book-cover");
+  cover.classList.remove("is-loaded");
+  cover.alt = `Book cover for ${book.title} by ${book.author}`;
+  cover.onload = () => cover.classList.add("is-loaded");
+  cover.onerror = () => cover.classList.remove("is-loaded");
+  cover.src = bookCoverUrl(book);
+}
+
+async function loadBookData() {
+  try {
+    const response = await fetch(`books.json?refresh=${centralDateKey()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error("Book list unavailable");
+    const payload = await response.json();
+    if (!Array.isArray(payload.books) || !payload.books.length) throw new Error("No active books");
+    activeBooks = payload.books;
+  } catch {
+    activeBooks = FALLBACK_BOOKS;
+  }
+  updateBookOfDay(true);
+}
+
 function updateDistrictPhoto() {
   const dateKey = centralDateKey();
   const dayNumber = Number(dateKey.replaceAll("-", ""));
@@ -377,6 +453,7 @@ function checkMorningRefresh() {
   const today = `${parts.year}-${parts.month}-${parts.day}`;
   const hour = Number(parts.hour) % 24;
   if (hour >= 8 && localStorage.getItem("linkedSlidesRefreshDate") !== today) loadLinkedSlides(true);
+  updateBookOfDay();
 }
 
 function openSettings() {
@@ -439,11 +516,12 @@ async function init() {
   updateClock();
   updateNewsDate();
   updateDistrictPhoto();
+  document.querySelector("#slide-total").textContent = String(slides.length).padStart(2, "0");
   setInterval(updateClock, 1000);
   const startHour = Number(centralTimeParts().hour) % 24;
   if (startHour < 8) localStorage.removeItem("linkedSlidesRefreshDate");
   loadLinkedSlides(startHour >= 8);
-  await Promise.all([loadTrivia(), loadWeather(), loadNews(), loadMinnesotaNews()]);
+  await Promise.all([loadTrivia(), loadWeather(), loadNews(), loadMinnesotaNews(), loadBookData()]);
   setInterval(loadWeather, 15 * 60 * 1000);
   setInterval(loadNews, 30 * 60 * 1000);
   setInterval(loadMinnesotaNews, 30 * 60 * 1000);

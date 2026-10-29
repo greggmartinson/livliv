@@ -262,6 +262,54 @@ button { color: inherit; }
 .mn-mark strong { margin-top: 18px; font-size: clamp(100px, 11vw, 180px); line-height: .74; letter-spacing: -.11em; }
 .mn-star { position: absolute; right: 11%; bottom: 24%; color: var(--lime); font-size: clamp(88px, 10vw, 160px); line-height: 1; text-shadow: 0 0 42px rgba(216,255,69,.18); }
 
+.book-layout {
+  height: 100%;
+  display: grid;
+  grid-template-columns: minmax(230px, .58fr) minmax(0, 1.42fr);
+  gap: clamp(42px, 6vw, 104px);
+  align-items: center;
+}
+
+.book-cover-card {
+  position: relative;
+  width: min(25vw, 360px);
+  aspect-ratio: 2 / 3;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(238,244,236,.24);
+  background: linear-gradient(150deg, rgba(216,255,69,.19), rgba(96,229,209,.08));
+  box-shadow: 0 34px 90px rgba(0,0,0,.34);
+}
+
+.book-cover-card img {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.book-cover-card img.is-loaded { opacity: 1; }
+.book-cover-fallback { position: absolute; inset: 0; display: grid; grid-template-rows: auto 1fr auto; padding: 28px; }
+.book-cover-fallback span, .book-cover-fallback small { color: var(--lime); font: 500 10px/1.3 "DM Mono", monospace; letter-spacing: .16em; }
+.book-cover-fallback strong { align-self: center; font-size: clamp(120px, 15vw, 220px); line-height: .8; text-align: center; letter-spacing: -.12em; }
+.book-cover-fallback small { align-self: end; color: var(--muted); }
+
+.book-details { min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+.book-details .eyebrow-row { margin-bottom: 20px; }
+.book-meta { display: flex; gap: 16px; margin-bottom: 22px; color: var(--muted); font: 500 10px/1 "DM Mono", monospace; letter-spacing: .12em; }
+.book-meta span + span::before { content: ""; display: inline-block; width: 4px; height: 4px; margin: 0 16px 2px 0; border-radius: 50%; background: var(--lime); }
+.book-details h1 { max-width: 980px; margin: 0; font-size: clamp(38px, 4.4vw, 76px); line-height: .98; letter-spacing: -.055em; text-wrap: balance; }
+.book-author { margin: 18px 0 0; color: var(--muted); font-size: clamp(18px, 1.7vw, 28px); }
+.book-author strong { color: var(--paper); }
+.book-teaser { display: -webkit-box; max-width: 920px; margin: clamp(20px, 3vh, 34px) 0 0; overflow: hidden; color: rgba(238,244,236,.78); font-size: clamp(16px, 1.35vw, 22px); line-height: 1.48; -webkit-box-orient: vertical; -webkit-line-clamp: 4; }
+.book-link { width: fit-content; margin-top: clamp(22px, 3vh, 36px); padding-bottom: 8px; border-bottom: 1px solid var(--lime); color: var(--paper); font: 500 11px/1 "DM Mono", monospace; letter-spacing: .11em; text-decoration: none; text-transform: uppercase; }
+.book-link:hover, .book-link:focus-visible { color: var(--lime); outline: none; }
+.book-link[hidden] { display: none; }
+
 .slide-district { padding: clamp(18px, 2.3vh, 34px) clamp(24px, 3vw, 54px); }
 .district-photo-link { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; color: var(--paper); text-decoration: none; background: #13242d; border: 1px solid rgba(238,244,236,.22); box-shadow: 0 28px 90px rgba(0,0,0,.24); }
 .district-photo-link img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; transform: scale(1.01); }
@@ -371,6 +419,10 @@ button { color: inherit; }
   .forecast-panel { display: none; }
   .news-layout { grid-template-columns: 1fr; }
   .news-art { display: none; }
+  .book-layout { grid-template-columns: minmax(150px, .42fr) minmax(0, 1.58fr); gap: 28px; }
+  .book-cover-card { width: min(27vw, 210px); }
+  .book-details h1 { font-size: clamp(34px, 5.8vw, 56px); }
+  .book-teaser { -webkit-line-clamp: 3; }
   .weather-now { align-items: flex-start; }
   .weather-details { margin-top: 28px; }
   .slide-source { padding: 16px; }
@@ -386,6 +438,10 @@ button { color: inherit; }
   .trivia-copy.has-options h1 { font-size: clamp(28px, 8.5vw, 44px); }
   .trivia-options { grid-template-columns: 1fr; gap: 8px; margin-top: 18px; }
   .trivia-option { min-height: 50px; padding: 9px 12px; }
+  .book-layout { grid-template-columns: 1fr; }
+  .book-cover-card { display: none; }
+  .book-details h1 { font-size: clamp(34px, 10vw, 52px); }
+  .book-teaser { -webkit-line-clamp: 4; }
   .answer-shell { grid-template-columns: 1fr; gap: 9px; }
   .temperature { font-size: 30vw; }
   .weather-icon { width: 68px; font-size: 44px; }
